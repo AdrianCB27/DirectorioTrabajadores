@@ -67,10 +67,6 @@
     </div>
    
     <script>
-
-        // setInterval(() => {
-        //     location = '/bumpingthat'
-        // }, 150);
         const buscador=document.getElementById('buscador');
         buscador.focus();
         buscador.setSelectionRange(buscador.value.length, buscador.value.length);

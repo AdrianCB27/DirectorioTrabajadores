@@ -23,6 +23,11 @@ class TrabajadorController extends Controller
             return view('trabajadores.index',compact('trabajadores','parametro'));
 
         }
+        elseif(str_contains($parametro, 'sustituto')){
+            $trabajadores = Trabajador::where('sustituto',true)->get();
+            return view('trabajadores.index',compact('trabajadores','parametro'));
+
+        }
         else{
         
             $trabajadores = Trabajador::where('nombre', 'LIKE', "%{$parametro}%")->
@@ -92,10 +97,8 @@ class TrabajadorController extends Controller
         return view('trabajadores.edit',compact('trabajador'));
     }
 
-
     public function update(Request $request, int $id)
     {
-        // Validación de los datos
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'apellidos' => 'required|string|max:255',
@@ -110,13 +113,18 @@ class TrabajadorController extends Controller
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
     
-        
+        $trabajador = Trabajador::findOrFail($id);
+    
         if ($request->hasFile('foto')) {
+            if ($trabajador->foto) {
+                Storage::disk('public')->delete($trabajador->foto);
+            }
+    
             $path = Storage::disk('public')->put('', $request->file('foto'));
             $validated['foto'] = $path; 
+        } else {
+            $validated['foto'] = $trabajador->foto;
         }
-        $trabajador=Trabajador::findOrFail($id);
-        Storage::disk('public')->delete($trabajador->foto);
     
         $trabajador->update([
             'nombre' => $validated['nombre'],
@@ -128,11 +136,12 @@ class TrabajadorController extends Controller
             'cargos' => $validated['cargos'] ?? [],
             'mayor55' => $validated['mayor'] ?? false,
             'sustituto' => $validated['sustituto'] ?? false,
-            'foto' => $validated['foto'] ?? null,  
+            'foto' => $validated['foto'],  
         ]);
     
-        return redirect()->route('trabajadores.index');
+        return redirect()->route('trabajadores.index')->with('success', 'Trabajador actualizado correctamente.');
     }
+    
 
 
     public function destroy(int $id)

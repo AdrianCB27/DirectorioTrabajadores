@@ -15,7 +15,7 @@
     </div>
     <form class="py-4 px-6" action="{{route('trabajadores.update',$trabajador->id)}}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('putc')
+        @method('put')
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="nombre">
                 Nombre
@@ -133,13 +133,17 @@
 
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2" for="foto">
-                Foto
+                Foto actual
             </label>
+            <div class="mb-2">
+                <img src="{{ asset('storage/'.$trabajador->foto) }}" alt="Foto de {{ $trabajador->nombre }}" class="h-32 mx-auto rounded-lg shadow">
+            </div>
             <input type="file" name="foto" class="border p-1 rounded mx-auto">
             @error('foto')
                 <div class="text-red-500 text-sm mt-2">{{ $message }}</div>
             @enderror
         </div>
+        
 
         <div class="flex items-center justify-center mb-4">
             <button class="bg-green-900 text-white py-2 px-4 rounded hover:bg-green-800 focus:outline-none focus:shadow-outline" type="submit">

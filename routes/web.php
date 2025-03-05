@@ -17,13 +17,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [TrabajadorController::class,'index'])->name('trabajadores.index');
 Route::get('/create', [TrabajadorController::class,'create'])->name('trabajadores.create');
 
-Route::get('/{parametro}', [TrabajadorController::class, 'buscar'])->name('buscar');
 Route::get('/show/{id}', [TrabajadorController::class,'show'])->name('trabajadores.show');
 
 Route::post('/store', [TrabajadorController::class,'store'])->name('trabajadores.store');
 Route::get('/edit/{id}', [TrabajadorController::class,'edit'])->name('trabajadores.edit');
 Route::put('/update/{id}', [TrabajadorController::class,'update'])->name('trabajadores.update');
 Route::delete('/destroy/{id}', [TrabajadorController::class,'destroy'])->name('trabajadores.destroy');
+
+Route::get('/{parametro}', [TrabajadorController::class, 'buscar'])->name('buscar');
+
 
 
 
